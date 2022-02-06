@@ -13,11 +13,6 @@ export const addMessageToStore = (state, payload) => {
 
 	return state.map((convo) => {
 		if (convo.id === message.conversationId) {
-			// THIS WILL NOT UPDATE STATE CORRECTLY AND THUS
-			// COMPONENT WILL NOT RE RENDER MESSAGES!
-			// convo.messages.push(message);
-			// convo.latestMessageText = message.text;
-			// return convo
 			const convoCopy = { ...convo, latestMessageText: message.text };
 			convoCopy.messages = [...convoCopy.messages, message];
 			return convoCopy;
