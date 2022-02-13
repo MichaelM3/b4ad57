@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { FormControl, FilledInput } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { postMessage } from '../../store/utils/thunkCreators';
+import React, { useState } from "react";
+import { FormControl, FilledInput } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { postMessage } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles(() => ({
 	root: {
-		justifySelf: 'flex-end',
+		justifySelf: "flex-end",
 		marginTop: 15,
 	},
 	input: {
 		height: 70,
-		backgroundColor: '#F4F6FA',
+		backgroundColor: "#F4F6FA",
 		borderRadius: 8,
 		marginBottom: 20,
 	},
@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 
 const Input = (props) => {
 	const classes = useStyles();
-	const [text, setText] = useState('');
+	const [text, setText] = useState("");
 	const { postMessage, otherUser, conversationId, user } = props;
 
 	const handleChange = (event) => {
@@ -36,7 +36,7 @@ const Input = (props) => {
 			sender: conversationId ? null : user,
 		};
 		await postMessage(reqBody);
-		setText('');
+		setText("");
 	};
 
 	return (
@@ -45,9 +45,9 @@ const Input = (props) => {
 				<FilledInput
 					classes={{ root: classes.input }}
 					disableUnderline
-					placeholder='Type something...'
+					placeholder="Type something..."
 					value={text}
-					name='text'
+					name="text"
 					onChange={handleChange}
 				/>
 			</FormControl>

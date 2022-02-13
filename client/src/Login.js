@@ -1,6 +1,6 @@
-import React from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React from "react";
+import { Redirect, useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 import {
 	Grid,
 	Box,
@@ -8,8 +8,8 @@ import {
 	Button,
 	FormControl,
 	TextField,
-} from '@material-ui/core';
-import { login } from './store/utils/thunkCreators';
+} from "@material-ui/core";
+import { login } from "./store/utils/thunkCreators";
 
 const Login = (props) => {
 	const history = useHistory();
@@ -24,43 +24,43 @@ const Login = (props) => {
 	};
 
 	if (user.id) {
-		return <Redirect to='/home' />;
+		return <Redirect to="/home" />;
 	}
 
 	return (
-		<Grid container justifyContent='center'>
+		<Grid container justifyContent="center">
 			<Box>
 				<Grid container item>
 					<Typography>Need to register?</Typography>
-					<Button onClick={() => history.push('/register')}>
+					<Button onClick={() => history.push("/register")}>
 						Register
 					</Button>
 				</Grid>
 				<form onSubmit={handleLogin}>
 					<Grid>
 						<Grid>
-							<FormControl margin='normal' required>
+							<FormControl margin="normal" required>
 								<TextField
-									aria-label='username'
-									label='Username'
-									name='username'
-									type='text'
+									aria-label="username"
+									label="Username"
+									name="username"
+									type="text"
 								/>
 							</FormControl>
 						</Grid>
-						<FormControl margin='normal' required>
+						<FormControl margin="normal" required>
 							<TextField
-								label='password'
-								aria-label='password'
-								type='password'
-								name='password'
+								label="password"
+								aria-label="password"
+								type="password"
+								name="password"
 							/>
 						</FormControl>
 						<Grid>
 							<Button
-								type='submit'
-								variant='contained'
-								size='large'
+								type="submit"
+								variant="contained"
+								size="large"
 							>
 								Login
 							</Button>
