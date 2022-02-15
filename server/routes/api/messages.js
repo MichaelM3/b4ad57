@@ -47,4 +47,14 @@ router.post("/", async (req, res, next) => {
 	}
 });
 
+router.put("/:id", async (req, res, next) => {
+	try {
+		const message = await Message.findByPk(req.body.id);
+		await message.update({ messageRead: req.body.messageRead });
+		res.json(message);
+	} catch (error) {
+		next(error);
+	}
+});
+
 module.exports = router;
