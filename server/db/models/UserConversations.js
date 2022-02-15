@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const { User, Conversation } = require(".");
 const db = require("../db");
 
-const UsesrConversations = db.define("userConversations", {
+const UserConversations = db.define("userConversations", {
 	UserId: {
 		type: Sequelize.INTEGER,
 		references: {
@@ -19,4 +19,4 @@ const UsesrConversations = db.define("userConversations", {
 	},
 });
 
-module.exports = UsesrConversations;
+module.exports = UserConversations;
