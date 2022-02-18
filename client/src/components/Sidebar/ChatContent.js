@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const ChatContent = (props) => {
 	const classes = useStyles();
 
-	const { conversation } = props;
+	const { conversation, isLoggedIn } = props;
 	const { latestMessageText, otherUser } = conversation;
 	const [unreadCount, setUnreadCount] = useState(0);
 
@@ -33,7 +33,7 @@ const ChatContent = (props) => {
 	};
 
 	useEffect(() => {
-		if (conversation.id) {
+		if (conversation.id && isLoggedIn) {
 			getUnreadMessages();
 		}
 	});
