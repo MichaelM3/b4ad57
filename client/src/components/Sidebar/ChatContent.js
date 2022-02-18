@@ -33,7 +33,9 @@ const ChatContent = (props) => {
 	};
 
 	useEffect(() => {
-		getUnreadMessages();
+		if (conversation.id) {
+			getUnreadMessages();
+		}
 	});
 
 	return (

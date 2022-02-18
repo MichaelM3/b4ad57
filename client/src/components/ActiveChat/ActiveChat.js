@@ -3,7 +3,6 @@ import { Box } from "@material-ui/core";
 import { Input, Header, Messages } from "./index";
 import { connect } from "react-redux";
 import { messagesWereRead } from "../../store/utils/thunkCreators";
-import { useState } from "react";
 
 const useStyles = makeStyles(() => ({
 	root: {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,7 +27,9 @@ const Chat = (props) => {
 
 	const handleClick = async (conversation) => {
 		await props.setActiveChat(conversation.otherUser.username);
-		await props.messagesWereRead(conversation);
+		if (conversation.id) {
+			await props.messagesWereRead(conversation);
+		}
 	};
 
 	return (

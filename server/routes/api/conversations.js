@@ -114,7 +114,9 @@ router.get("/:id", async (req, res, next) => {
 				[Op.not]: [{ senderId: req.user.id }],
 			},
 		});
-		res.json(unreadMessagesCount);
+		if (unreadMessagesCount > 0) {
+			res.json(unreadMessagesCount);
+		}
 	} catch (error) {
 		next(error);
 	}
