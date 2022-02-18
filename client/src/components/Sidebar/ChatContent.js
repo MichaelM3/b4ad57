@@ -1,43 +1,56 @@
-import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Badge, Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { unreadMessageCount } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginLeft: 20,
-    flexGrow: 1,
-  },
-  username: {
-    fontWeight: "bold",
-    letterSpacing: -0.2,
-  },
-  previewText: {
-    fontSize: 12,
-    color: "#9CADC8",
-    letterSpacing: -0.17,
-  },
+	root: {
+		display: "flex",
+		justifyContent: "space-between",
+		marginLeft: 20,
+		flexGrow: 1,
+	},
+	username: {
+		fontWeight: "bold",
+		letterSpacing: -0.2,
+	},
+	previewText: {
+		fontSize: 12,
+		color: "#9CADC8",
+		letterSpacing: -0.17,
+	},
 }));
 
 const ChatContent = (props) => {
-  const classes = useStyles();
+	const classes = useStyles();
 
-  const { conversation } = props;
-  const { latestMessageText, otherUser } = conversation;
+	const { conversation, isLoggedIn } = props;
+	const { latestMessageText, otherUser } = conversation;
+	const [unreadCount, setUnreadCount] = useState(0);
 
-  return (
-    <Box className={classes.root}>
-      <Box>
-        <Typography className={classes.username}>
-          {otherUser.username}
-        </Typography>
-        <Typography className={classes.previewText}>
-          {latestMessageText}
-        </Typography>
-      </Box>
-    </Box>
-  );
+	const getUnreadMessages = async () => {
+		setUnreadCount(await unreadMessageCount(conversation.id));
+	};
+
+	useEffect(() => {
+		if (conversation.id && isLoggedIn) {
+			getUnreadMessages();
+		}
+	});
+
+	return (
+		<Box className={classes.root}>
+			<Box>
+				<Typography className={classes.username}>
+					{otherUser.username}
+				</Typography>
+				<Typography className={classes.previewText}>
+					{latestMessageText}
+				</Typography>
+			</Box>
+			{unreadCount > 0 && <Badge badgeContent={unreadCount} color="primary" />}
+		</Box>
+	);
 };
 
 export default ChatContent;

@@ -40,6 +40,6 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^8.5.0"
+    "cypress": "^9.4.1"
   }
 }

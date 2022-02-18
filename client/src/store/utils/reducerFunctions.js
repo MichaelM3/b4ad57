@@ -84,3 +84,28 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 		}
 	});
 };
+
+export const updateMessagesRead = (state, payload) => {
+	const { conversationId, messages } = payload;
+	return state.map((convo) => {
+		if (convo.id === conversationId) {
+			const copyConvo = { ...convo };
+			const updatedMessages = messages.map((message) => {
+				message.isRead = true;
+
+				return message;
+			});
+
+			const firstUnreadMessageIndex = copyConvo.messages.indexOf(
+				updatedMessages[updatedMessages.length - 1]
+			);
+			copyConvo.messages = [
+				...copyConvo.messages.slice(0, firstUnreadMessageIndex),
+				...updatedMessages,
+			];
+			return copyConvo;
+		} else {
+			return convo;
+		}
+	});
+};

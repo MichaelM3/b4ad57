@@ -5,6 +5,7 @@ import {
 	addConversation,
 	setNewMessage,
 	setSearchedUsers,
+	messagesRead,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -40,9 +41,7 @@ export const register = (credentials) => async (dispatch) => {
 		socket.emit("go-online", data.id);
 	} catch (error) {
 		console.error(error);
-		dispatch(
-			gotUser({ error: error.response.data.error || "Server Error" })
-		);
+		dispatch(gotUser({ error: error.response.data.error || "Server Error" }));
 	}
 };
 
@@ -54,9 +53,7 @@ export const login = (credentials) => async (dispatch) => {
 		socket.emit("go-online", data.id);
 	} catch (error) {
 		console.error(error);
-		dispatch(
-			gotUser({ error: error.response.data.error || "Server Error" })
-		);
+		dispatch(gotUser({ error: error.response.data.error || "Server Error" }));
 	}
 };
 
@@ -88,12 +85,58 @@ const saveMessage = async (body) => {
 	return data;
 };
 
+export const saveMessageRead = async (conversation) => {
+	const { data } = await axios.put(
+		`api/conversations/${conversation.id}`,
+		conversation
+	);
+	return data;
+};
+
+export const unreadMessageCount = async (conversationId) => {
+	const { data } = await axios.get(`/api/conversations/${conversationId}`);
+	return data;
+};
+
+export const sendUpdatedMessage = (conversation, messages) => {
+	socket.emit("message-read", {
+		messages: messages,
+		conversation: conversation,
+	});
+};
+
 const sendMessage = (data, body) => {
 	socket.emit("new-message", {
 		message: data.message,
 		recipientId: body.recipientId,
 		sender: data.sender,
+		conversationId: data.message.conversationId,
 	});
+};
+
+export const messagesWereRead = (conversation) => async (dispatch) => {
+	try {
+		const unreadMessagesArray = [];
+		for (let i = conversation.messages.length - 1; i >= 0; i--) {
+			if (
+				conversation.messages[i].isRead === false &&
+				conversation.messages[i].senderId === conversation.otherUser.id
+			) {
+				unreadMessagesArray.push(conversation.messages[i]);
+			} else if (
+				conversation.messages[i].senderId === conversation.otherUser.id
+			) {
+				break;
+			}
+		}
+		if (unreadMessagesArray.length > 0) {
+			await saveMessageRead(conversation);
+			dispatch(messagesRead(conversation, unreadMessagesArray));
+			sendUpdatedMessage(conversation, unreadMessagesArray);
+		}
+	} catch (error) {
+		console.error(error);
+	}
 };
 
 // message format to send: {recipientId, text, conversationId}

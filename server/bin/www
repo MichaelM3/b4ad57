@@ -48,6 +48,13 @@ io.on("connection", (socket) => {
 		});
 	});
 
+	socket.on("message-read", (data) => {
+		socket.broadcast.emit("message-read", {
+			messages: data.messages,
+			conversation: data.conversation,
+		});
+	});
+
 	socket.on("logout", (id) => {
 		if (onlineUsers.includes(id)) {
 			userIndex = onlineUsers.indexOf(id);
@@ -118,8 +125,7 @@ function onError(error) {
 
 function onListening() {
 	const addr = server.address();
-	const bind =
-		typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+	const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
 
 	console.log("Listening on " + bind);
 }
