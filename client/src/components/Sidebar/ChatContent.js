@@ -1,6 +1,7 @@
-import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Badge, Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { unreadMessageCount } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -18,29 +19,22 @@ const useStyles = makeStyles((theme) => ({
 		color: "#9CADC8",
 		letterSpacing: -0.17,
 	},
-	unreadCount: {
-		fontSize: 10,
-		fontWeight: "bolder",
-		color: "#FFFFFF",
-		background: "#3F92FF",
-		borderRadius: 10,
-		paddingLeft: 5,
-		paddingRight: 5,
-		height: 15,
-	},
 }));
 
 const ChatContent = (props) => {
 	const classes = useStyles();
 
 	const { conversation } = props;
-	const { latestMessageText, otherUser, messages } = conversation;
+	const { latestMessageText, otherUser } = conversation;
+	const [unreadCount, setUnreadCount] = useState(0);
 
-	const unreadMessageCount = messages.filter((message) => {
-		return (
-			message.senderId === otherUser.id && message.messageRead === false
-		);
-	}).length;
+	const getUnreadMessages = async () => {
+		setUnreadCount(await unreadMessageCount(conversation.id));
+	};
+
+	useEffect(() => {
+		getUnreadMessages();
+	});
 
 	return (
 		<Box className={classes.root}>
@@ -52,11 +46,7 @@ const ChatContent = (props) => {
 					{latestMessageText}
 				</Typography>
 			</Box>
-			{unreadMessageCount > 0 ? (
-				<Typography className={classes.unreadCount}>
-					{unreadMessageCount}
-				</Typography>
-			) : null}
+			{unreadCount > 0 && <Badge badgeContent={unreadCount} color="primary" />}
 		</Box>
 	);
 };

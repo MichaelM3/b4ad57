@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { makeStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
 import { connect } from "react-redux";
-import { messagesRead } from "../../store/conversations";
+import { messagesWereRead } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,7 +27,7 @@ const Chat = (props) => {
 
 	const handleClick = async (conversation) => {
 		await props.setActiveChat(conversation.otherUser.username);
-		await props.messagesRead(conversation.id);
+		await props.messagesWereRead(conversation);
 	};
 
 	return (
@@ -48,8 +48,8 @@ const mapDispatchToProps = (dispatch) => {
 		setActiveChat: (id) => {
 			dispatch(setActiveChat(id));
 		},
-		messagesRead: (conversationId) => {
-			dispatch(messagesRead(conversationId));
+		messagesWereRead: (conversation) => {
+			dispatch(messagesWereRead(conversation));
 		},
 	};
 };

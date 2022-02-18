@@ -1,5 +1,3 @@
-import { sendUpdatedMessage, updateMessage } from "./thunkCreators";
-
 export const addMessageToStore = (state, payload) => {
 	const { message, sender } = payload;
 	// if sender isn't null, that means the message needs to be put in a brand new convo
@@ -87,23 +85,24 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 	});
 };
 
-export const updateMessagesRead = (state, conversationId) => {
+export const updateMessagesRead = (state, payload) => {
+	const { conversationId, messages } = payload;
 	return state.map((convo) => {
 		if (convo.id === conversationId) {
 			const copyConvo = { ...convo };
-			// Map through messages, and change any unread messages to read.
-			const updatedMessages = copyConvo.messages.map((message) => {
-				if (
-					message.messageRead === false &&
-					message.senderId === convo.otherUser.id
-				) {
-					message.messageRead = true;
-					updateMessage(message);
-					sendUpdatedMessage(message);
-				}
+			const updatedMessages = messages.map((message) => {
+				message.isRead = true;
+
 				return message;
 			});
-			copyConvo.messages = updatedMessages;
+
+			const firstUnreadMessageIndex = copyConvo.messages.indexOf(
+				updatedMessages[updatedMessages.length - 1]
+			);
+			copyConvo.messages = [
+				...copyConvo.messages.slice(0, firstUnreadMessageIndex),
+				...updatedMessages,
+			];
 			return copyConvo;
 		} else {
 			return convo;

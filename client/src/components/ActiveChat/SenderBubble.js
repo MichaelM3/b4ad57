@@ -35,20 +35,20 @@ const useStyles = makeStyles(() => ({
 
 const SenderBubble = (props) => {
 	const classes = useStyles();
-	const { time, text, otherUser, wasRead } = props;
+	const { time, text, otherUser, isRead, lastMessage, id } = props;
 	return (
 		<Box className={classes.root}>
 			<Typography className={classes.date}>{time}</Typography>
 			<Box className={classes.bubble}>
 				<Typography className={classes.text}>{text}</Typography>
 			</Box>
-			{wasRead ? (
+			{isRead && lastMessage.id === id && (
 				<Avatar
 					className={classes.avatar}
 					src={otherUser.photoUrl}
 					alt={otherUser.username}
-				></Avatar>
-			) : null}
+				/>
+			)}
 		</Box>
 	);
 };

@@ -19,10 +19,10 @@ const ADD_CONVERSATION = "ADD_CONVERSATION";
 const MESSAGES_READ = "MESSAGES_READ";
 
 // ACTION CREATORS
-export const messagesRead = (conversationId) => {
+export const messagesRead = (conversation, messages) => {
 	return {
 		type: MESSAGES_READ,
-		conversationId,
+		payload: { conversationId: conversation.id, messages: messages },
 	};
 };
 
@@ -80,7 +80,7 @@ export const addConversation = (recipientId, newMessage) => {
 const reducer = (state = [], action) => {
 	switch (action.type) {
 		case MESSAGES_READ:
-			return updateMessagesRead(state, action.conversationId);
+			return updateMessagesRead(state, action.payload);
 		case GET_CONVERSATIONS:
 			return action.conversations;
 		case SET_MESSAGE:

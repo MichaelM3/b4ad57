@@ -22,8 +22,8 @@ socket.on("connect", () => {
 	socket.on("new-message", (data) => {
 		store.dispatch(setNewMessage(data.message, data.sender));
 	});
-	socket.on("message-read", (message) => {
-		store.dispatch(messagesRead(message.conversationId));
+	socket.on("message-read", (data) => {
+		store.dispatch(messagesRead(data.conversation, data.messages));
 	});
 });
 
