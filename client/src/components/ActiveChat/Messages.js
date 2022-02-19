@@ -16,6 +16,8 @@ const Messages = (props) => {
 						key={message.id}
 						text={message.text}
 						time={time}
+						otherUser={otherUser}
+						wasRead={message.messageRead}
 					/>
 				) : (
 					<OtherUserBubble

@@ -88,6 +88,16 @@ const saveMessage = async (body) => {
 	return data;
 };
 
+export const updateMessage = async (message) => {
+	await axios.put(`/api/messages/${message.id}`, message);
+};
+
+export const sendUpdatedMessage = (message) => {
+	socket.emit("message-read", {
+		message: message,
+	});
+};
+
 const sendMessage = (data, body) => {
 	socket.emit("new-message", {
 		message: data.message,
